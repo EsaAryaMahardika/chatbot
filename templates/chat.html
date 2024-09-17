@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='sweetalert.css') }}" />
+</head>
+
+<body class="theme-blush font-montserrat">
+    {% include 'includes/nav.html' %}
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="body">
+                    <div class="chatapp_list">
+                        <div class="d-flex justify-content-between align-items-center mt-3 mb-3 mr-3">
+                            <h6 class="m-0">History Chat</h6>
+                            <a class="action" id="add-conversation">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </div>
+                        <div class="scrollable" id="history-list">
+                            {% include 'includes/history.html' %}
+                        </div>
+                    </div>
+                    <div class="chatapp_body">
+                        <div class="chat-header clearfix">
+                            <div class="row clearfix">
+                                <div class="col-lg-12">
+                                    <div class="chat-about">
+                                        <h6 class="mb-0">Louis Pierce</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-history" id="message_bubble">
+                            {% include 'includes/messages.html' %}
+                        </div>
+                        <div class="chat-message clearfix">
+                            <form method="post" class="input-group mb-0">
+                                <textarea type="text" class="form-control" id="ask" placeholder="Konsultasi di sini"></textarea>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <a type="submit" class="action"><i class="fa fa-arrow-up"></i></a>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/script.html' %}
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+<ul class="right_chat list-unstyled mb-0"></ul>
+    {% for conversation in conversations %}
+    <li id="conversation-{{ conversation[0] }}">
+        <a href="{{ url_for('messages', conversation_id=conversation[0]) }}">
+            <div class="media d-flex justify-content-between align-items-center">
+                <span class="name">{{ conversation[1] }}</span>
+                <a class="action" href=""><i class="fa fa-trash"></i></a>
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>

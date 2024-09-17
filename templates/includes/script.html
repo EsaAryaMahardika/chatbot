@@ -1,0 +1,35 @@
+<script src="{{ url_for('static', filename='libscripts.bundle.js') }}"></script>
+<script src="{{ url_for('static', filename='vendorscripts.bundle.js') }}"></script>
+<script src="{{ url_for('static', filename='sweetalert.min.js') }}"></script>
+<script src="{{ url_for('static', filename='mainscripts.bundle.js') }}"></script>
+<script>
+    $(document).ready(function () {
+        $('#add-conversation').click(function () {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url_for("new_chat") }}',
+                success: function (response) {
+                    $('#history-list').html(response);
+                },
+                error: function (xhr, status, error) {
+                    alert(response.error);
+                }
+            });
+        });
+        $('[id^=conversation-]').click(function () {
+            var buttonId = $(this).attr('id');
+            var conversationId = buttonId.split('-')[1];
+            $.ajax({
+                type: 'GET',
+                url: '/messages/' + conversationId,
+                success: function (response) {
+                    $('#message_bubble').html(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Error: ' + error);
+                }
+            });
+        });
+
+    });
+</script>
