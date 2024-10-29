@@ -1,52 +1,91 @@
-<ul class="message_data">
-    <li class="right clearfix">
-        <div class="message">
-            <span>Hi Aiden, how are you?<br> How is the project coming along?</span>
+{% if title %}
+    <div class="chat-history">
+        <ul class="message_data">
+            <div class="chat-header">
+                <h6 class="mb-0" id="title-conversation">{{ title[0] }}</h6>
+            </div>
+            {% for message in messages %}
+                {% if message[0] == 'bot' %}
+                    <li class="left clearfix">
+                        <div class="message">
+                            <span>{{ message[1] }}</span>
+                        </div>
+                        <span class="data_time">{{ message[2] }}</span>
+                    </li>
+                {% else %}
+                    <li class="right clearfix">
+                        <div class="message">
+                            <span>{{ message[1] }}</span>
+                        </div>
+                        <span class="data_time">{{ message[2] }}</span>
+                    </li>
+                {% endif %}
+            {% endfor %}
+    </ul>
+</div>
+<div class="chat-message clearfix">
+    <form method="post" class="input-group mb-0">
+        <textarea type="text" class="form-control ask" placeholder="Konsultasi di sini"></textarea>
+        <div class="input-group-prepend">
+            <span class="input-group-text">
+                <a type="submit" class="action"><i class="fa fa-arrow-up"></i></a>
+            </span>
         </div>
-        <span class="data_time">10:12 AM, Today</span>
-    </li>
-    <li class="left clearfix">
-        <div class="message">
-            <span>Are we meeting today?</span>
-        </div>
-        <span class="data_time">10:12 AM, Today</span>
-    </li>
-    <li class="right clearfix">
-        <div class="message">
-            <span>How is the project coming along?</span>
-        </div>
-        <span class="data_time">10:12 AM, Today</span>
-    </li>
-    <li class="left clearfix">
-        <div class="message">
-            <span>Project has been already finished and I have<br> results to show
-                you.</span>
-        </div>
-        <span class="data_time">10:16 AM, Today</span>
-    </li>
-    <li class="right clearfix">
-        <div class="message">
-            <span>Hi Aiden, how are you?<br> How is the project coming along?</span>
-        </div>
-        <span class="data_time">10:12 AM, Today</span>
-    </li>
-    <li class="left clearfix">
-        <div class="message">
-            <span>Are we meeting today?</span>
-        </div>
-        <span class="data_time">10:12 AM, Today</span>
-    </li>
-    <li class="right clearfix">
-        <div class="message">
-            <span>How is the project coming along?</span>
-        </div>
-        <span class="data_time">10:12 AM, Today</span>
-    </li>
-    <li class="left clearfix">
-        <div class="message">
-            <span>Project has been already finished and I have<br> results to show
-                you.</span>
-        </div>
-        <span class="data_time">10:16 AM, Today</span>
-    </li>
-</ul>
+    </form>
+</div>
+<script>
+    // Untuk mengirim pesan dengan menekan tombol
+    $(document).off("click", ".fa-arrow-up").on("click", ".fa-arrow-up", function(e) {
+        e.preventDefault();
+        manageChat();
+    });
+    // Untuk mengirim pesan dengan menekan Enter
+    $(document).off("keydown", ".ask").on("keydown", ".ask", function(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            manageChat();
+        }
+    });
+    function manageChat() {
+        let conversationId = '{{ title[1] }}';
+        let userMessage = $(".ask").val().trim();
+        if (userMessage !== "") {
+            $(".ask").val(""); // Kosongkan input setelah submit
+            $.ajax({
+                type: 'POST',
+                url: '/send/' + conversationId,
+                data: JSON.stringify({ message: userMessage }),
+                contentType: "application/json",
+                success: function () {
+                    $(".message_data").append(messageU(userMessage, "right"));
+                    $(".chat-history").scrollTop($(".chat-history")[0].scrollHeight);
+                },
+                error: function (xhr, status, error) {
+                    alert(response.error);
+                }
+            });
+        }
+    }
+    function messageU(message, className) {
+        let currentTime = new Date();
+        let year = currentTime.getFullYear();
+        let month = (currentTime.getMonth() + 1).toString().padStart(2, '0');
+        let day = currentTime.getDate().toString().padStart(2, '0');
+        let hours = currentTime.getHours().toString().padStart(2, '0');
+        let minutes = currentTime.getMinutes().toString().padStart(2, '0');
+        let formattedTime = `${hours}:${minutes} ${day}-${month}-${year}`;
+        const chatUser = $("<li></li>").addClass(`${className} clearfix`);
+        const div_message = $("<div></div>").addClass(`message`);
+        let chatContent = `<span>${message}</span>`;
+        div_message.html(chatContent);
+        let date_time = $(`<span>${formattedTime}</span>`).addClass(`data_time`);
+        chatUser.html(div_message);
+        chatUser.append(date_time);
+        return chatUser;
+    }
+</script>
+{% else %}
+<div class="start-chat">
+    <h4 class="no-messages">Buat percakapan baru atau pilih riwayat percakapan!</h4>
+</div>
+{% endif %}

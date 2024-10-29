@@ -106,6 +106,7 @@ a:focus {
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .navbar-nav .icon-menu {
@@ -347,14 +348,9 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .chat-widget li.left .chat-info,
-.chatapp_body .chat-history .message_data li.left .message {
-    text-align: left
-}
-
-.chat-widget li.right,
-.chat-widget li.right .chat-info,
+.chatapp_body .chat-history .message_data li.left .message,
 .chatapp_body .chat-history .message_data li.right .message {
-    text-align: right
+    text-align: left
 }
 
 .right_chat li {
@@ -419,6 +415,7 @@ select.form-control:not([size]):not([multiple]) {
 .scrollable .media .name {
     color: #a5a8ad;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .scrollable .media .name:hover {
@@ -444,7 +441,12 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 .chatapp_body .chat-header {
-    padding: 15px 20px
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    background-color: #282b2f;
+    border: 1px;
+    z-index: 99;
 }
 
 @media screen and (max-width: 768px) {
@@ -454,15 +456,17 @@ select.form-control:not([size]):not([multiple]) {
     }
 }
 
-.chatapp_body .chat-header .chat-about {
-    float: left
-}
-
 .chatapp_body .chat-history {
     height: 70vh;
     overflow-y: auto;
-    padding: 20px;
     border-top: 1px solid #2f3338
+}
+
+.start-chat{
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @media screen and (max-width: 1024px) {
@@ -527,7 +531,8 @@ select.form-control:not([size]):not([multiple]) {
     background: #3C89DA;
     color: #f7f7f7;
     float: left;
-    border-radius: 10px 10px 10px 0
+    border-radius: 10px 10px 10px 0;
+    max-width: 500px;
 }
 
 .chatapp_body .chat-history .message_data li.left .message:after {
@@ -545,7 +550,8 @@ select.form-control:not([size]):not([multiple]) {
     background: #2f3338;
     color: #bbbec2;
     float: right;
-    border-radius: 10px 10px 0 10px
+    border-radius: 10px 10px 0 10px;
+    max-width: 500px;
 }
 
 .chatapp_body .chat-history .message_data li.right .message:after {

@@ -224,39 +224,6 @@ $(function () {
         }
       );
     });
-    // Memunculkan chat pengguna
-    const inputEl = $("#ask");
-    const btnEl = $(".fa-arrow-up");
-    const cardBodyEl = $(".message_data");
-    const chat = $(".chat-history");
-    let userMessage;
-
-    btnEl.on("click", manageChat);
-    inputEl.on("input", function (e) {
-      e.preventDefault();
-      $(this).on("keydown", function (keyboard) {
-        if (keyboard.key === "Enter") {
-          manageChat();
-        }
-      });
-    });
-    function manageChat() {
-      userMessage = inputEl.val().trim();
-      if (!userMessage) return;
-      inputEl.val("");
-      cardBodyEl.append(messageU(userMessage, "right"));
-      chat.scrollTop(chat[0].scrollHeight);
-    }
-    function messageU(message, className) {
-      const chatUser = $("<li></li>").addClass(`${className} clearfix`);
-      const div_message = $("<div></div>").addClass(`message`);
-      let chatContent = `
-      <span>${message}</span>
-      `;
-      div_message.html(chatContent);
-      chatUser.html(div_message);
-      return chatUser;
-    }
   }),
   ($.fn.clickToggle = function (t, n) {
     return this.each(function () {

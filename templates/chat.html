@@ -28,29 +28,8 @@
                             {% include 'includes/history.html' %}
                         </div>
                     </div>
-                    <div class="chatapp_body">
-                        <div class="chat-header clearfix">
-                            <div class="row clearfix">
-                                <div class="col-lg-12">
-                                    <div class="chat-about">
-                                        <h6 class="mb-0">Louis Pierce</h6>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chat-history" id="message_bubble">
-                            {% include 'includes/messages.html' %}
-                        </div>
-                        <div class="chat-message clearfix">
-                            <form method="post" class="input-group mb-0">
-                                <textarea type="text" class="form-control" id="ask" placeholder="Konsultasi di sini"></textarea>
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <a type="submit" class="action"><i class="fa fa-arrow-up"></i></a>
-                                    </span>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="chatapp_body" id="message_bubble">
+                        {% include 'includes/messages.html' %}
                     </div>
                 </div>
             </div>

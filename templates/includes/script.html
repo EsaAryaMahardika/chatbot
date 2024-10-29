@@ -4,6 +4,7 @@
 <script src="{{ url_for('static', filename='mainscripts.bundle.js') }}"></script>
 <script>
     $(document).ready(function () {
+        // Untuk membuat percakapan baru
         $('#add-conversation').click(function () {
             $.ajax({
                 type: 'POST',
@@ -16,6 +17,8 @@
                 }
             });
         });
+        
+        // Untuk membuka percakapan yang sudah ada
         $('[id^=conversation-]').click(function () {
             var buttonId = $(this).attr('id');
             var conversationId = buttonId.split('-')[1];
@@ -26,10 +29,29 @@
                     $('#message_bubble').html(response);
                 },
                 error: function (xhr, status, error) {
-                    console.log('Error: ' + error);
+                    alert(response.error);
                 }
             });
         });
 
+        // Untuk mengirim pesan baru
+        $('.action').click(function () {
+            var conversationId = $('#conversation-id').val();
+            var userMessage = $('#user-message').val();
+            $.ajax({
+                type: 'POST',
+                url: '/send/' + conversationId,
+                data: JSON.stringify({ message: userMessage }),
+                contentType: "application/json",
+                success: function () {
+                    $('#message_bubble').append(messageU(userMessage, "right"));
+                    $('#user-message').val("");
+                    $(".chat-history").scrollTop($(".chat-history")[0].scrollHeight);
+                },
+                error: function (xhr, status, error) {
+                    alert(response.error);
+                }
+            });
+        });
     });
 </script>
