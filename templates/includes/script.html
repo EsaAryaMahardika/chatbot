@@ -33,25 +33,5 @@
                 }
             });
         });
-
-        // Untuk mengirim pesan baru
-        $('.action').click(function () {
-            var conversationId = $('#conversation-id').val();
-            var userMessage = $('#user-message').val();
-            $.ajax({
-                type: 'POST',
-                url: '/send/' + conversationId,
-                data: JSON.stringify({ message: userMessage }),
-                contentType: "application/json",
-                success: function () {
-                    $('#message_bubble').append(messageU(userMessage, "right"));
-                    $('#user-message').val("");
-                    $(".chat-history").scrollTop($(".chat-history")[0].scrollHeight);
-                },
-                error: function (xhr, status, error) {
-                    alert(response.error);
-                }
-            });
-        });
     });
 </script>

@@ -56,8 +56,11 @@
                 url: '/send/' + conversationId,
                 data: JSON.stringify({ message: userMessage }),
                 contentType: "application/json",
-                success: function () {
+                success: function (data) {
                     $(".message_data").append(messageU(userMessage, "right"));
+                    setTimeout( function () {
+                        $(".message_data").append(messageU(data.response, "left"));
+                    }, 1000 );
                     $(".chat-history").scrollTop($(".chat-history")[0].scrollHeight);
                 },
                 error: function (xhr, status, error) {

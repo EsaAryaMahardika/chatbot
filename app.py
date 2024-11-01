@@ -6,18 +6,24 @@ app.config.from_object(Config)
 database = MySQL(app)
 from datetime import datetime
 import nltk
-nltk.download('popular')
-from nltk.stem import WordNetLemmatizer
-lemmatizer = WordNetLemmatizer()
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 import pickle
 import numpy as np
 from keras.models import load_model
-model = load_model('model/models.h5')
 import json
 import random
-intents = json.loads(open('model/intens.json').read())
+import re
+model = load_model('model/models.keras')
+stop_words = set(stopwords.words("indonesian"))
+stemmer = PorterStemmer()
+intents = json.loads(open('model/intents.json').read())
 words = pickle.load(open('model/texts.pkl','rb'))
 classes = pickle.load(open('model/labels.pkl','rb'))
+
+# Load the normalization data
+with open('model/baku.json') as f:
+    normalization_data = json.load(f)
 
 # Format waktu pada pesan
 def format_datetime(value):
@@ -112,16 +118,31 @@ def delete_conversation(conversation_id):
         flash('Percakapan berhasil dihapus', 'success')
     else:
         return redirect(url_for('login'))
+# Normalization
+def normalize_word(word):
+    return normalization_data.get(word, word)
 
-# Untuk memecah kalimat menjadi kata - kata dan mengubah kata ke bentuk dasar
-def clean_up_sentence(sentence):
+# NLP
+def nlp_steps(sentence):
+    # Case Folding
+    sentence = sentence.lower()
+    # Normalization
+    sentence_words = [normalize_word(word.lower()) for word in sentence]
+    # Tokenization
     sentence_words = nltk.word_tokenize(sentence)
-    sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]
+    # Menghapus karakter spesial
+    sentence_words = [re.sub(r'[^\w\s]', '', word) for word in sentence_words]
+    # Menghapus angka
+    sentence_words = [re.sub(r'\d+', '', word) for word in sentence_words]
+    # Filtering (menghapus stop words)
+    sentence_words = [word for word in sentence_words if word not in stop_words]
+    # Stemming
+    sentence_words = [stemmer.stem(word) for word in sentence_words]
     return sentence_words
 
-# Membuat Bag of Words (Pengubah data teks menjadi angka 1 (jika sesuai) dan 0 (jika tidak sesuai) agar dapat dipahami oleh komputer)
+# Bag of Words
 def bow(sentence, words, show_details=True):
-    sentence_words = clean_up_sentence(sentence)
+    sentence_words = nlp_steps(sentence)
     bag = [0]*len(words)  
     for s in sentence_words:
         for i,w in enumerate(words):
@@ -133,17 +154,17 @@ def bow(sentence, words, show_details=True):
 
 # Untuk memprediksi maksud/keinginan dari kata - kata inputan pengguna dengan model yang sudah dibuat
 def predict_class(sentence, model):
-    p = bow(sentence, words,show_details=False)
+    p = bow(sentence, words, show_details=False)
     res = model.predict(np.array([p]))[0]
     ERROR_THRESHOLD = 0.25
-    results = [[i,r] for i,r in enumerate(res) if r>ERROR_THRESHOLD]
+    results = [[i, r] for i, r in enumerate(res) if r > ERROR_THRESHOLD]
     results.sort(key=lambda x: x[1], reverse=True)
     return_list = []
     for r in results:
         return_list.append({"intent": classes[r[0]], "probability": str(r[1])})
     return return_list
 
-# Untuk menentukan respons chatbot yang relevan berdasarkan predisksi
+# Untuk memilih jawaban yang sesuai dengan dataset
 def getResponse(ints, intents_json):
     tag = ints[0]['intent']
     list_of_intents = intents_json['intents']
@@ -153,7 +174,7 @@ def getResponse(ints, intents_json):
             break
     return result
 
-# Untuk menggabungkan proses predict dan respons
+# Untuk menampilkan hasil getResponse    
 def chatbot_response(msg):
     ints = predict_class(msg, model)
     res = getResponse(ints, intents)
@@ -170,10 +191,11 @@ def send(conversation_id):
             user_id = session.get('user_id')
             cur = database.connection.cursor()
             cur.execute("INSERT INTO messages (conversation_id, message, sender) VALUES (%s, %s, %s)", (conversation_id, user_message, sender))
+            bot_message = chatbot_response(user_message)
+            cur.execute("INSERT INTO messages (conversation_id, message, sender) VALUES (%s, %s, 'bot')", (conversation_id, bot_message))
             database.connection.commit()
             cur.close()
-            response = chatbot_response(user_message)
-            return jsonify({"status": "success"}), 200
+            return jsonify({"response": bot_message})
         return jsonify({"error": "Pesan Kosong"}), 400
     return redirect(url_for('login'))
 

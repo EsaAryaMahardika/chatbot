@@ -1,6 +1,13 @@
 {
   "intents": [
     {
+      "tag": "fallback",
+      "patterns": [],
+      "responses": [
+          "Maaf, saya tidak yakin dengan jawaban saya. Untuk pertanyaan lebih lanjut, silakan konsultasikan dengan dokter secara langsung."
+      ]
+    },
+    {
       "tag": "Luka",
       "patterns": [
         "Apa yang harus dilakukan jika terluka?",
@@ -67,7 +74,7 @@
         "Obat apa yang harus digunakan jika saya keseleo?"
       ],
       "responses": [
-        "Gunakan kompres es segera selama 15 hingga 20 menit dan ulangi setiap dua hingga tiga jam saat Anda bangun. Untuk membantu menghentikan pembengkakan, kompres pergelangan kaki dengan perban elastis hingga pembengkakan berhenti. Dalam kebanyakan kasus, obat pereda nyeri seperti ibuprofen (Advil, Motrin IB, lainnya) atau naproxen sodium (Aleve, lainnya) atau acetaminophen (Tylenol, lainnya) sudah cukup untuk mengatasi nyeri pada pergelangan kaki yang keseleo."
+        "Gunakan kompres es segera selama 15 hingga 20 menit dan ulangi setiap dua hingga tiga jam saat Anda bangun. Untuk membantu menghentikan pembengkakan, kompres pergelangan kaki dengan perban elastis hingga pembengkakan berhenti. Dalam kebanyakan kasus, obat pereda nyeri seperti ibuprofen (Advil, Motrin IB, lainnya) atau naproxen sodium (Aleve, lainnya) atau acetaminophen (Tylenol, lainnya) sudah cukup untuk mengatasi nyeri pada pergelangan kaki atau tangan yang keseleo."
       ],
       "context_set": ""
     },
