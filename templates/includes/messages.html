@@ -2,7 +2,11 @@
     <div class="chat-history">
         <ul class="message_data">
             <div class="chat-header">
-                <h6 class="mb-0" id="title-conversation">{{ title[0] }}</h6>
+                {% if username == "dokter" %}
+                <h6 class="mb-0" id="title-conversation">{{ title[1] }} - {{ title[2] }}</h6>
+                {% else %}
+                <h6 class="mb-0" id="title-conversation">{{ title[1] }}</h6>
+                {% endif %}
             </div>
             {% for message in messages %}
                 {% if message[0] == 'bot' %}
@@ -23,6 +27,15 @@
             {% endfor %}
     </ul>
 </div>
+{% if username == "dokter" %}
+<div class="chat-message clearfix text-center">
+    <p>Apakah jawaban bot relevan?</p>
+    <div class="row d-flex justify-content-center">
+        <button type="button" class="btn btn-success mr-3 valid" value="1">Iya</button>
+        <button type="button" class="btn btn-danger ml-3 valid" value="0">Tidak</button>
+    </div>
+</div>
+{% else %}
 <div class="chat-message clearfix">
     <form method="post" class="input-group mb-0">
         <textarea type="text" class="form-control ask" placeholder="Konsultasi di sini"></textarea>
@@ -33,6 +46,7 @@
         </div>
     </form>
 </div>
+{% endif %}
 <script>
     // Untuk mengirim pesan dengan menekan tombol
     $(document).off("click", ".fa-arrow-up").on("click", ".fa-arrow-up", function(e) {
@@ -47,7 +61,7 @@
         }
     });
     function manageChat() {
-        let conversationId = '{{ title[1] }}';
+        let conversationId = '{{ title[0] }}';
         let userMessage = $(".ask").val().trim();
         if (userMessage !== "") {
             $(".ask").val(""); // Kosongkan input setelah submit
@@ -86,9 +100,66 @@
         chatUser.append(date_time);
         return chatUser;
     }
+    // $('.valid').click(function () {
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '{{ url_for("validate") }}',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify({ 
+    //             is_valid: $(this).val(),
+    //             conversation_id: '{{ title[0] }}' 
+    //         }),
+    //         success: function (response) {
+    //             alert(response);
+    //         },
+    //         error: function (xhr, status, error) {
+    //             alert(response.error);
+    //         }
+    //     });
+    // });
+    $(".valid").on("click", function () {
+        let valid = $(this).val();
+        let conversation_id = "{{ title[0] }}";
+        let conversation_title = "{{ title[1] }}";
+        swal({
+            title: `Apakah anda yakin ingin validasi "${conversation_title}"?`,
+            text: "Tindakan ini tidak bisa dibatalkan.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            confirmButtonText: "Yakin",
+            cancelButtonText: "Batal",
+            closeOnConfirm: false,
+        }, function () {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url_for("validate") }}',
+                contentType: 'application/json',
+                data: JSON.stringify({ 
+                    is_valid: valid,
+                    conversation_id: conversation_id
+                }),
+                success: function (response) {
+                    swal("Berhasil!", "Validasi berhasil diperbarui.", "success");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                },
+                error: function (xhr, status, error) {
+                    swal("Gagal!", "Terjadi kesalahan saat memvalidasi.", "error");
+                }
+            });
+        });
+    });
 </script>
 {% else %}
-<div class="start-chat">
-    <h4 class="no-messages">Buat percakapan baru atau pilih riwayat percakapan!</h4>
-</div>
+    {% if username == "dokter" %}
+    <div class="start-chat">
+        <h4 class="no-messages">Pilih riwayat percakapan!</h4>
+    </div>
+    {% else %}
+    <div class="start-chat">
+        <h4 class="no-messages">Buat percakapan baru atau pilih riwayat percakapan!</h4>
+    </div>
+    {% endif %}
 {% endif %}

@@ -2,6 +2,7 @@
 <script src="{{ url_for('static', filename='vendorscripts.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='sweetalert.min.js') }}"></script>
 <script src="{{ url_for('static', filename='mainscripts.bundle.js') }}"></script>
+<script src="{{ url_for('static', filename='ace.js') }}"></script>
 <script>
     $(document).ready(function () {
         // Untuk membuat percakapan baru
@@ -19,7 +20,7 @@
         });
         
         // Untuk membuka percakapan yang sudah ada
-        $('[id^=conversation-]').click(function () {
+        $(document).on('click', '[id^=conversation-]', function() {
             var buttonId = $(this).attr('id');
             var conversationId = buttonId.split('-')[1];
             $.ajax({
@@ -33,5 +34,59 @@
                 }
             });
         });
+        $(document).on('click', '.delete', function() {
+            var conversationId = $(this).data('conversation-id');
+            $.ajax({
+                type: 'POST',
+                url: '/delete_conversation/' + conversationId,
+                success: function(response) {
+                    $("#conversation-" + conversationId).remove();
+                },
+                error: function(xhr, status, error) {
+                    alert("Error: " + error);
+                }
+            });
+        });
+        const $passwordInput = $('#password');
+        const $confirmPasswordInput = $('#confirm_password');
+        const $errorMessage = $('#error-message');
+        const $submitButton = $('#submitBtn');
+
+        function validatePassword() {
+            const password = $passwordInput.val();
+            const confirmPassword = $confirmPasswordInput.val();
+
+            if (password !== confirmPassword && confirmPassword !== "") {
+                $errorMessage.show().text('Password dan Repeat Password harus sama!');
+                $submitButton.prop('disabled', true); // Nonaktifkan tombol submit
+            } else if (password === confirmPassword && confirmPassword !== "") {
+                $errorMessage.hide();
+                $submitButton.prop('disabled', false); // Aktifkan tombol submit
+            }
+        }
+
+        $passwordInput.on('input', validatePassword);
+        $confirmPasswordInput.on('input', validatePassword);
+    });
+</script>
+<script>
+    const intents = ace.edit("intents");
+    intents.session.setMode("ace/mode/json");
+    intents.setTheme("ace/theme/github");
+
+    const baku = ace.edit("baku");
+    baku.session.setMode("ace/mode/json");
+    baku.setTheme("ace/theme/github");
+
+    const form_intents = document.querySelector('form [value="intents_content"]').closest('form');
+    const intentsContent = document.getElementById('intents_content');
+    form_intents.addEventListener('submit', () => {
+        intentsContent.value = intents.getValue();
+    });
+
+    const form_baku = document.querySelector('form [value="baku_content"]').closest('form');
+    const bakuContent = document.getElementById('baku_content');
+    form_baku.addEventListener('submit', () => {
+        bakuContent.value = baku.getValue();
     });
 </script>

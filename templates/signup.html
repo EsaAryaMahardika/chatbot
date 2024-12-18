@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <title>Chatbot</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='vivify.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='site.min.css') }}">
+    </head>
+</head>
+
+<body class="theme-blush font-montserrat light_version">
+    <div class="auth-main particles_js">
+        <div class="auth_div vivify popIn">
+            <div class="auth_brand">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="card">
+                <div class="body p-4">
+                    <h3>Sign Up</h3>
+                    <form class="form-auth-small m-t-20" method="post">
+                        <div class="form-group">
+                            <label for="username" class="control-label sr-only">Username</label>
+                            <input type="text" name="username" class="form-control round" placeholder="Username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="control-label sr-only">Password</label>
+                            <input type="password" name="password" class="form-control round" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signin-password" class="control-label sr-only">Repeat Password</label>
+                            <input type="password" name="confirm_password" class="form-control round" placeholder="Repeat Password" required>
+                        </div>
+                        <button type="submit" id="submitBtn" class="btn btn-primary btn-round btn-block">Sign Up</button>
+                        <div class="bottom">
+                            <span>Punya akun? <a href="/login">Log in</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="particles-js"></div>
+    </div>
+    <script src="{{ url_for('static', filename='libscripts.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendorscripts.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='mainscripts.bundle.js') }}"></script>s
+</body>
+
+</html>

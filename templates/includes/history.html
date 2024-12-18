@@ -1,10 +1,18 @@
 <ul class="right_chat list-unstyled mb-0"></ul>
-    {% for conversation in conversations %}
-    <li class="media d-flex justify-content-between align-items-center mb-3">
-        <a id="conversation-{{ conversation[0] }}">
+{% for conversation in conversations %}
+<li class="media d-flex justify-content-between align-items-center mb-3" id="conversation-{{ conversation[0] }}">
+    <a id="conversation-{{ conversation[0] }}">
+        {% if username == "dokter" %}
+            <span class="name">{{ conversation[1] }} - {{ conversation[2] }}</span>
+        {% else %}
             <span class="name">{{ conversation[1] }}</span>
-        </a>
-        <a class="action" href=""><i class="fa fa-trash"></i></a>
-    </li>
-    {% endfor %}
+        {% endif %}
+    </a>
+    {% if username != "dokter" %}
+        <button type="button" class="action delete" data-conversation-id="{{ conversation[0] }}">
+            <i class="fa fa-trash"></i>
+        </button>
+    {% endif %}
+</li>
+{% endfor %}
 </ul>

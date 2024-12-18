@@ -11,19 +11,25 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='sweetalert.css') }}" />
 </head>
 
-<body class="theme-blush font-montserrat">
+<body class="theme-blush font-montserrat light_version">
     {% include 'includes/nav.html' %}
     <div class="clearfix">
         <div class="col-lg-12">
             <div class="card">
                 <div class="body">
                     <div class="chatapp_list">
-                        <div class="d-flex justify-content-between align-items-center mt-3 mb-3 mr-3">
-                            <h6 class="m-0">History Chat</h6>
-                            <a class="action" id="add-conversation">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        </div>
+                        {% if username == "dokter" %}
+                            <div class="d-flex justify-content-between align-items-center mt-3 mb-3 mr-3">
+                                <h6 class="m-0">Selama datang <b class="text-uppercase">{{ username }}</b></h6>
+                            </div>
+                        {% else %}
+                            <div class="d-flex justify-content-between align-items-center mt-3 mb-3 mr-3">
+                                <h6 class="m-0">History Chat</h6>
+                                <a class="action" id="add-conversation">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </div>
+                        {% endif %}
                         <div class="scrollable" id="history-list">
                             {% include 'includes/history.html' %}
                         </div>

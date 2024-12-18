@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='all.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='sweetalert.css') }}" />
+</head>
+
+<body class="theme-blush font-montserrat light_version">
+    {% include 'includes/nav.html' %}
+    <div class="clearfix">
+        <div class="col-lg-12">
+            <div class="card">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <div class="body">
+                    <div class="d-flex justify-content-center mt-2">
+                        <button type="button" id="upgrade" class="btn btn-success">Perbarui Model</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <form method="post">
+                                <div class="m-3">
+                                    <h2>intens.json</h2>
+                                </div>
+                                <div class="row m-2">
+                                    <div id="intents" class="editor">{{ intents_content|safe }}</div>
+                                    <textarea name="intents_content" id="intents_content" style="display: none;"></textarea>
+                                    <div class="ml-2">
+                                        <input type="hidden" name="file_to_update" value="intents_content">
+                                        <button type="submit" class="btn btn-info">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-6">
+                            <form method="post">
+                                <div class="m-3">
+                                    <h2>baku.json</h2>
+                                </div>
+                                <div class="row m-2">
+                                    <div id="baku" class="editor">{{ baku_content|safe }}</div>
+                                    <textarea name="baku_content" id="baku_content" style="display: none;"></textarea>
+                                    <div class="ml-2">
+                                        <input type="hidden" name="file_to_update" value="baku_content">
+                                        <button type="submit" class="btn btn-info">Simpan</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/script.html' %}
+</body>
+
+</html>
