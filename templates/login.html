@@ -50,12 +50,53 @@
                     </form>
                 </div>
             </div>
+            <div class="text-center m-3">
+                <button type="button" class="btn btn-round btn-info" data-toggle="modal" data-target="#panduan">Panduan Pengguna</button>
+            </div>
         </div>
         <div id="particles-js"></div>
     </div>
+    <div class="modal fade" id="panduan" tabindex="-1" role="dialog" aria-labelledby="panduanTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="panduanTitle">Panduan Pengguna</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#pengguna">Pengguna</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#dokter">Dokter</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#admin">Admin</a></li>
+                    </ul>
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane show vivify fadeIn active" id="pengguna">
+                            <h6>Pengguna</h6>
+                            <p>1. Daftar akun terlebih dahulu dengan menekan hyperlink Sign Up di bawah tombol Login.</p>
+                            <p>2. Isikan username dan Password. Pastikan anda mengingat password yang anda buat.</p>
+                            <p>3. Kembali ke halaman Login kemudian masukkan username dan password yang telah anda daftarkan untuk mengakses chatbot.</p>
+                        </div>
+                        <div class="tab-pane vivify fadeIn" id="dokter">
+                            <h6>Dokter</h6>
+                            <p>Gunakan username dokter dan password 1234.</p>
+                        </div>
+                        <div class="tab-pane vivify fadeIn" id="admin">
+                            <h6>Admin</h6>
+                            <p>Gunakan username admin dan password 1234.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="{{ url_for('static', filename='libscripts.bundle.js') }}"></script>
     <script src="{{ url_for('static', filename='vendorscripts.bundle.js') }}"></script>
-    <script src="{{ url_for('static', filename='mainscripts.bundle.js') }}"></script>s
+    <script src="{{ url_for('static', filename='mainscripts.bundle.js') }}"></script>
 </body>
 
 </html>

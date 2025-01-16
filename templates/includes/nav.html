@@ -4,8 +4,33 @@
         <h5>Selamat datang: {{ username }}</h5>
         <div id="navbar-menu">
             <ul class="nav navbar-nav">
+                <li><button type="button" class="icon-menu action" data-toggle="modal" data-target="#guide"><i class="fa fa-info"></i></button></li>
                 <li><a class="icon-menu action" id="logout"><i class="fa fa-power-off"></i></a></li>
             </ul>
         </div>
     </div>
 </nav>
+<div class="modal fade" id="guide" tabindex="-1" role="dialog" aria-labelledby="guideTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="guideTitle">Panduan Pengguna</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if username == "dokter" %}
+                <img src="{{ url_for('static', filename='img/dokter.jpg') }}" alt="Panduan Dokter" style="max-width: 100%; height: auto;">
+                {% elif username == "admin" %}
+                <img src="{{ url_for('static', filename='img/admin.jpg') }}" alt="Panduan Admin" style="max-width: 100%; height: auto;">
+                {% else %}
+                <img src="{{ url_for('static', filename='img/pengguna.jpg') }}" alt="Panduan Pengguna" style="max-width: 100%; height: auto;">
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-round btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

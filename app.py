@@ -103,6 +103,7 @@ def chatbot():
 # Untuk admin
 @app.route('/admin', methods=['GET','POST'])
 def admin():
+    username = session.get('username')
     files = {
             'intents': os.path.join(os.getcwd(), 'model/intents.json'),
             'baku': os.path.join(os.getcwd(), 'model/baku.json')
@@ -127,7 +128,7 @@ def admin():
         with open(files['intents'], 'r') as intents, open(files['baku'], 'r') as baku:
             intents_content = json.dumps(json.load(intents), indent=4)
             baku_content = json.dumps(json.load(baku), indent=4)
-        return render_template('admin.html', intents_content=intents_content, baku_content=baku_content)
+        return render_template('admin.html', intents_content=intents_content, baku_content=baku_content, username=username)
 
 # Untuk validasi dokter
 @app.route('/validate', methods=['POST'])
